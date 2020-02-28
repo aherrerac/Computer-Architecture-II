@@ -20,13 +20,15 @@
 
 // A normal C function that is executed as a thread  
 // when its name is specified in pthread_create() 
-#define SIZE_MAX 5000
+#define SIZE_MAX 1000
 
+//Int Arrays
 int a1[SIZE_MAX];
 int a2[SIZE_MAX];
 
 int count = 0; 
 
+//Generates random 8bits number
 int randNumber()
 {
     int num = (rand() % 
@@ -34,84 +36,53 @@ int randNumber()
     return num; 
 }
 
-void *myThreadFun(void *vargp) 
+//Store a number in a1 every 10ms
+void *storeInts10() 
 {
-    int temp = SIZE_MAX;
-    while(0<temp)
+    int temp = 0;
+    while(temp<SIZE_MAX)
     { 
         usleep(10000); 
-        printf("Printing Thread 1\n"); 
-        int r = randNumber();  
-        printf("%d\n",r);
-        temp--;
+        a1[temp] = randNumber(); 
+        temp++;
     }    
 }
-
-void *myThread(void *vargp) 
+//Store a number in a2 every 5ms
+void *storeInts5() 
 { 
-    int temp = SIZE_MAX;
-    while(0<temp)
-    {
+    int temp = 0;
+    while(temp<SIZE_MAX)
+    { 
         usleep(5000); 
-        printf("Printing Thread 2\n");
-        int r = randNumber();
-        printf("%d\n",r);
-        temp--; 
-    } 
+        a2[temp] = randNumber(); 
+        temp++;
+    }    
 } 
-
-void *AND(void *vargp) 
+//Executes AND function between a1 and a2 data
+void *AND() 
 { 
     int temp = 0;
     while(temp<SIZE_MAX)
     {
-        usleep(10500); 
+        usleep(10000); 
         int and  = a1[temp] && a2[temp];
-        printf("%d\n AND ",and);
+        printf("Operation result (%d && %d) = %d\n",a1[temp],a2[temp],and);
         temp++; 
     } 
 } 
-
-void *raceProcessA(void *vargp)
-{
-    while(count<100)
-    { 
-        
-        printf("Executing process A\n"); 
-        count++;
-        printf("End process A\n"); 
-        sleep(1); 
-    }    
-}
-void *raceProcessB(void *vargp)
-{
-    while(count<100)
-    { 
-        printf("Executing process B\n"); 
-        count++;
-        printf("End process B\n"); 
-        sleep(1); 
-    }    
-}
    
 int main() 
 { 
-    
-   /* pthread_t thread_1;  
-    pthread_create(&thread_1, NULL, myThreadFun, NULL); 
+    //Defines and creates threads
+    pthread_t thread_1;  
+    pthread_create(&thread_1, NULL,storeInts10, NULL); 
     pthread_t thread_2; 
-    pthread_create(&thread_2, NULL, myThread, NULL); 
+    pthread_create(&thread_2, NULL,storeInts5, NULL); 
     pthread_t thread_and; 
     pthread_create(&thread_and, NULL, AND, NULL); 
+    //Threads joins
     pthread_join(thread_1, NULL); 
     pthread_join(thread_2, NULL); 
-    pthread_join(thread_and, NULL); */
-    pthread_t thread_A;  
-    pthread_create(&thread_A, NULL, raceProcessA, NULL);
-    pthread_t thread_B;  
-    pthread_create(&thread_B, NULL, raceProcessB, NULL);
-    pthread_join(thread_A, NULL); 
-    pthread_join(thread_B, NULL);
-
+    pthread_join(thread_and, NULL);
     exit(0); 
 }
