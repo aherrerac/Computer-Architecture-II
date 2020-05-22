@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/CacheSimulator.dir/src/main.c.o CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o CMakeFiles/CacheSimulator.dir/include/instruction.c.o CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o  -o CacheSimulator 
