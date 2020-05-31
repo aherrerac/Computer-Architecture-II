@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/aherrerac/CLionProjects/CacheSimulator/include/DirectoryController.c" "/home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
-  "/home/aherrerac/CLionProjects/CacheSimulator/include/SnoopingController.c" "/home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o"
-  "/home/aherrerac/CLionProjects/CacheSimulator/include/instruction.c" "/home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/instruction.c.o"
-  "/home/aherrerac/CLionProjects/CacheSimulator/include/randomPoisson.c" "/home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"
-  "/home/aherrerac/CLionProjects/CacheSimulator/src/main.c" "/home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/src/main.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/instruction.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/randomPoisson.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/src/main.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/src/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

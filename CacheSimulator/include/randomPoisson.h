@@ -8,7 +8,7 @@
 #include <gsl/gsl_randist.h>
 #include "../include/instruction.h"
 
-int getAddres(gsl_rng * r);
-instruction * intGenPoisson(gsl_rng * r,int core,int chip);
+
+void * intGenPoisson(instruction * inst,gsl_rng * opSeed,gsl_rng * dirSeed,int core,int chip);
 
 #endif //CACHESIMULATOR_RANDOMPOISSON_H

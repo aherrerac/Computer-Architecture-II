@@ -10,7 +10,7 @@ typedef struct {
     unsigned int core : 1;
     unsigned int chip : 1;
     unsigned int op : 2;
-    unsigned int address :4;
+    unsigned int address :5;
     int32_t data;
 } instruction;
 

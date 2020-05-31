@@ -5,10 +5,15 @@
 #define CACHESIMULATOR_SNOOPINGCONTROLLER_H
 
 #include <stdio.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
 #include "message.h"
+#include "instruction.h"
+#include "cache.h"
 
-void proController (struct message *message);
-void busController (struct message *message);
-
+void proController (message * message);
+void busController (message * message);
+privateMessage  prcacheController(instruction * newInstruction,L1 * L1);
+privateMessage buscacheController(privateMessage * message,L1 * L1cache);
 
 #endif //CACHESIMULATOR_SNOOPINGCONTROLLER_H

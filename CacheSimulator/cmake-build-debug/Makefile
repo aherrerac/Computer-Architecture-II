@@ -48,10 +48,10 @@ RM = /snap/clion/112/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/aherrerac/CLionProjects/CacheSimulator
+CMAKE_SOURCE_DIR = /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug
+CMAKE_BINARY_DIR = /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles /home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/aherrerac/CLionProjects/CacheSimulator/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

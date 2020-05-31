@@ -5,15 +5,15 @@
 #ifndef CACHESIMULATOR_MESSAGE_H
 #define CACHESIMULATOR_MESSAGE_H
 
-struct message
+typedef struct 
 {
     int id;
     int request;
     int addr;
     int state;
-};
+} message;
 
-struct nodeMessage
+typedef struct 
 {
     int type;
     int source;
@@ -21,7 +21,16 @@ struct nodeMessage
     int destination;
     int address;
     int id; 
-};
+} nodeMessage;
+
+typedef struct 
+{
+    int core;
+    int chip;
+    int acction;
+    int addr;
+    int data;
+} privateMessage;
 
 
 

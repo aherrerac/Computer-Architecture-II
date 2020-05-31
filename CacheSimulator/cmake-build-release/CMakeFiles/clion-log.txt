@@ -1,4 +1,4 @@
-/snap/clion/112/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" /home/aherrerac/CLionProjects/CacheSimulator
+/snap/clion/112/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/aherrerac/CLionProjects/CacheSimulator/cmake-build-release
+-- Build files have been written to: /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release

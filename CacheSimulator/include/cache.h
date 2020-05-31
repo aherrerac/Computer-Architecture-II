@@ -3,7 +3,7 @@ typedef struct {
     L1block l1Blocks[2];
 } L1;
 
-struct L2 {
+typedef struct {
     L2block l2Blocks[4];
-};
+}L2;
 
