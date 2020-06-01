@@ -25,8 +25,6 @@ typedef struct
 
 typedef struct 
 {
-    int core;
-    int chip;
     int acction;
     int addr;
     int data;

@@ -36,7 +36,7 @@ void *raceProcessA()
         count++;
         pthread_mutex_unlock(&lock);
         printf("End process A\n"); 
-        sleep(1); 
+        sleep(10); 
     }    
 }
 //Increases counter variable

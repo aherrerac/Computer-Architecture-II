@@ -8,7 +8,8 @@
 #include <stdint.h>
 typedef struct
 {
-    unsigned int state : 3;
+    unsigned int action : 3;
+    unsigned int id : 1;
     unsigned int address : 4;
     int32_t data;
 } bus;

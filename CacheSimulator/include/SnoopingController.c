@@ -1,171 +1,187 @@
-//
-// Created by aherrerac on 5/5/20.
-//
-//Todo : modificar la respuesta de error
 #include "SnoopingController.h"
 
+//Handles processor requests
 privateMessage prcacheController(instruction * newInstruction,L1 * L1cache){
     //Check if address is in cache
     int fhit = 0;
     int i;
+    //Memory response
+    privateMessage memResponse; 
     for (i = 0; i <= 1; i++)
     {
         if(L1cache->l1Blocks[i].state != 3){
             if(L1cache->l1Blocks[i].address == newInstruction->address && i == 0){
-            //Todo: Poner la impresion formal 
-            //printf("Se encontro en el primer lugar\n");
             fhit = 1;
             break;
         }
         else if(L1cache->l1Blocks[i].address == newInstruction->address && i == 1){
-            //Todo: Poner la impresion formal 
             fhit = 1;
-            //printf("Se encontro en el segundo lugar\n");
-        }
+            }
         }   
     }
-    privateMessage memResponse; 
+    //Block in cache
     if (fhit == 1){
-        //printf("Diagram States Address in memory\n");
         switch (L1cache->l1Blocks[i].state)
         {
         case 0: //Modified (Exclusive)
-            //printf("Block State -> Modified\n");
-            if(newInstruction->op == 0){
-                //Poner el equivalente a minutos
-                memResponse.acction = 0;
+            if(newInstruction->op == 0){ //Read
+                memResponse.acction = 5; //Read Hit
                 memResponse.addr = newInstruction->address;
-                memResponse.data = newInstruction->data;
+                memResponse.data = L1cache->l1Blocks[i].data;
                 return memResponse;
             }
-            else if(newInstruction->op == 2){
-                memResponse.acction = 0;
+            else if(newInstruction->op == 2){ //Write
+                memResponse.acction = 4;  //Write hit
                 memResponse.addr = newInstruction->address;
                 memResponse.data = newInstruction->data;
-                L1cache->l1Blocks[i] = newInstruction->data;
+                L1cache->l1Blocks[i].data = newInstruction->data;
                 return memResponse;
             }
+            else{
+                //Error 
+                exit(0);
+            } 
             break;
         case 1: //Shared
-            //printf("Block State -> Shared\n");
-            if(newInstruction->op == 0){
-                memResponse.acction = 0;
+            if(newInstruction->op == 0){ //Read 
+                memResponse.acction = 5; //Read Hit
+                memResponse.addr = newInstruction->address;
+                memResponse.data = L1cache->l1Blocks[i].data;
                 return memResponse;
 
             }
-            else if(newInstruction->op == 2){
-                memResponse.acction = 3;
+            else if(newInstruction->op == 2){ //Write
+                memResponse.acction = 2; //Invalidate
                 memResponse.addr = newInstruction->address;
-                memResponse.chip = newInstruction->chip;
-                memResponse.core = newInstruction->core;
                 return memResponse;
+            }
+            else{
+                exit(0);
             }
             break;
         case 2: //Invalid
-            //printf("Block State -> Invalided\n");
-            if(newInstruction->op == 0){
-                memResponse.acction = 0;
+            if(newInstruction->op == 0){ //Read
+                memResponse.acction = 0; //ReadMiss
                 memResponse.addr = newInstruction->address;
-                memResponse.chip = newInstruction->chip;
-                memResponse.core = newInstruction->core;
                 return memResponse;
             }
             else if(newInstruction->op == 2){
-                memResponse.acction = 1;
+                memResponse.acction = 1; //WriteMiss
                 memResponse.addr = newInstruction->address;
-                memResponse.chip = newInstruction->chip;
-                memResponse.core = newInstruction->core;
                 return memResponse;
             }
-            break;
-        default:
-            //printf("Error: Non knowed State\n");
+            else{
+                exit(0);
+            }
             break;
         }
     }
     else if (fhit == 0){
-        int location = newInstruction->address%2;
-        printf("Location %d \n",location);
-        if(L1cache->l1Blocks[location].state == 0){
-            memResponse.acction = 4;
+        int location = newInstruction->address%2; // Address new location in cache
+        if(L1cache->l1Blocks[location].state == 0){ //Write Back block Modified
+            memResponse.acction = 4; //Write Back
             memResponse.addr = L1cache->l1Blocks[location].address;
-            memResponse.chip = newInstruction->chip;
-            memResponse.core = newInstruction->core;
             memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
         }
         else{
-            //printf("Read Miss / Write Miss\n");
-            if(newInstruction->op == 0){
-                memResponse.acction = 1;
+            if(newInstruction->op == 0){ //Read
+                memResponse.acction = 0; //Read Miss
                 memResponse.addr = newInstruction->address;
-                memResponse.chip = newInstruction->chip;
-                memResponse.core = newInstruction->core;
                 return memResponse;
             }
-            else if(newInstruction->op == 2)
-            {
-                memResponse.acction = 2;
+            else if(newInstruction->op == 2){ //Write
+                memResponse.acction = 1; //Write Miss
                 memResponse.addr = newInstruction->address;
-                memResponse.chip = newInstruction->chip;
-                memResponse.core = newInstruction->core;
                 return memResponse;
             }
         }       
     }
-        //printf("Error: Cache L1 Fail (Processor %d Chip %d )\n" ,newInstruction->core,newInstruction->chip);
-        memResponse.acction = 4;
-        return memResponse;
+    exit(0);
 }
-
+//Handles bus responses 
 privateMessage buscacheController(privateMessage * message,L1 * L1cache){
-    privateMessage memResponse; 
-    int address = message->addr;
-    int i;
-    for (i = 0; i <= 1; i++)
-    {
-        if(L1cache->l1Blocks[i].address == address && i == 0){
-            break;
-        }        
-    }
-    switch (L1cache->l1Blocks[i].state)
+    privateMessage memResponse;
+    int location = message->addr%2;
+    switch (message->acction)
     {
     case 0:
-        if(message->acction == 2){
-            L1cache->l1Blocks[i].state = 2;
-            memResponse.acction = 0;
-            memResponse.addr = message->addr;
-            memResponse.data = L1cache->l1Blocks[i].data;
+        
+        //Block already on cache
+        if (L1cache->l1Blocks[location].address == message->addr){
+            L1cache->l1Blocks[location].state = 1;
+            L1cache->l1Blocks[location].data = message->data;
+            memResponse.acction = 6; //Updated
+            memResponse.addr = L1cache->l1Blocks[location].address;
+            memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
         }
+        //New block
         else{
-            L1cache->l1Blocks[i].state = 1;
-            memResponse.acction = 0;
-            memResponse.addr = message->addr;
-            memResponse.data = L1cache->l1Blocks[i].data;
+            L1cache->l1Blocks[location].address = message->addr;
+            L1cache->l1Blocks[location].data = message->data;
+            L1cache->l1Blocks[location].state = 1;
+            memResponse.acction = 7; //Created
+            memResponse.addr = L1cache->l1Blocks[location].address;
+            memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
         }
         break;
     case 1:
-        if(message->acction == 1){
-            memResponse.acction = 0;
+        //Block already on cache
+        if (L1cache->l1Blocks[location].address == message->addr){
+            L1cache->l1Blocks[location].state = 0;
+            L1cache->l1Blocks[location].data = message->data;
+            memResponse.acction = 6; //Updated
+            memResponse.addr = L1cache->l1Blocks[location].address;
+            memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
         }
-        else if (message->acction == 2)
-        {
-            L1cache->l1Blocks[i].state = 2;
-            memResponse.acction = 0;
+        //New block
+        else{
+            L1cache->l1Blocks[location].address = message->addr;
+            L1cache->l1Blocks[location].data = message->data;
+            L1cache->l1Blocks[location].state = 0;
+            memResponse.acction = 7; //Created
+            memResponse.addr = L1cache->l1Blocks[location].address;
+            memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
         }
-        else
-        {
-            L1cache->l1Blocks[i].state = 2;
-            memResponse.acction = 0;
-            return memResponse;
-        }
-        
         break;
+    case 2:
+        //Change block state to Invalid
+        L1cache->l1Blocks[location].state = 2;
+        memResponse.acction = 7; //Invalidated
+        memResponse.addr = L1cache->l1Blocks[location].address;
+        memResponse.data = L1cache->l1Blocks[location].data;
+        return memResponse;
+        break;
+    case 3:
+        L1cache->l1Blocks[location].state = 1;
+        memResponse.acction = 9; //Shared
+        memResponse.addr = L1cache->l1Blocks[location].address;
+        memResponse.data = L1cache->l1Blocks[location].data;
+        return memResponse;
+        break;
+    
     }
-    memResponse.acction = 4;
-    return memResponse;
+    exit(0);
+}
+
+int findAddress(int address,L1 * L1cache){
+    int i;
+    int fhit = 0;
+    for (i = 0; i <= 1; i++)
+    {
+        if(L1cache->l1Blocks[i].state != 3){
+            if(L1cache->l1Blocks[i].address == address && i == 0){
+            fhit = 1;
+            break;
+            }
+            else if(L1cache->l1Blocks[i].address == address && i == 1){
+                fhit = 1;
+            }
+        }   
+    }
+    return fhit;
 }

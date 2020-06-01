@@ -11,37 +11,27 @@
 #include "../include/message.h"
 #include "../include/bus.h"
 
-int enable = 0;
-
-int snoopflag[2];
+//Bus
+bus chip0Bus;
 
 typedef struct
 {
     int coreID;
     int chipID;
-   // bus * busDir;
 } thredattr;
+
+int busRead[2];
 
 pthread_mutex_t lock;
 
-
-void *controller(void * attr){
-    return NULL;
-}
-
-bus
-
 void *processor(void * attr){
-    int waitFlag = 0;
-
+    //Get processor data
     thredattr * args = (thredattr *) attr;
-    instruction  instr; // = (instruction *) malloc(sizeof(instruction));
-    
      //Setup random seeds for poisson distribution generator GNU Scientific Library 
     const gsl_rng_type * T;
     gsl_rng * opSeed; //Generates random instructions for processor 00 
     gsl_rng * dirSeed; //Generates random direction for processor 00
-
+    //Set up gsl 
     gsl_rng_env_setup();
     T = gsl_rng_default;
     //Initialice random seeds
@@ -52,51 +42,116 @@ void *processor(void * attr){
     gsl_rng_set(opSeed,rand());
     gsl_rng_set(dirSeed,rand());
 
-    L1 L1mem;
-    L1mem.l1Blocks[0].address = 10;
-    L1mem.l1Blocks[0].state = 0;
-    L1mem.l1Blocks[0].address = 8;
-    L1mem.l1Blocks[0].state = 0;
-    
+    //Init cache
+    L1 L1cache;
 
-    while(1)
-    {
+    //Messages 
+    privateMessage request;
+    privateMessage tempRequest;
+    privateMessage  memoryStatus;
+
+    //Flags
+    int waitingRequest = 0;
+    int processInstr = 0;
+    int busWriteEnable = 0;
+    int waitingbusAccess = 0;
+    //Instruction 
+    instruction instr;
+
+    while(1){
         pthread_mutex_lock(&lock);
-
-        if(snoopflag == 1){
-
-        }
+        //Check if address is in L1
         
-        if(waitFlag == 0){
-             intGenPoisson(&instr,opSeed,dirSeed,args->coreID,args->chipID);
+        if(request.addr == chip0Bus.address && busRead[args->coreID]){
+            if(request.acction != chip0Bus.action){
+                //Cancel previous request
+                memoryStatus.acction = chip0Bus.action;
+                memoryStatus.addr = chip0Bus.address;
+                memoryStatus.data = chip0Bus.data;
+                memoryStatus = buscacheController(&memoryStatus,&L1cache);
+                
+                if (memoryStatus.acction == 3){
+                    if(busWriteEnable){
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = args->coreID;
+                    }
+                    else{
+                        request = memoryStatus;
+                    }
+                }
+                else{
+                    printf("Se realizo el invalidate");
+                }  
+            }
+            else{
+                waitingRequest = 0;
+                memoryStatus.acction = chip0Bus.action;
+                memoryStatus.addr = chip0Bus.address;
+                memoryStatus.data = chip0Bus.data;
+                memoryStatus = buscacheController(&memoryStatus,&L1cache);
+                printf("Se actualizo memoria");
+                processInstr = 1;
+            }
         }
-       
-        printf("Processor %d Chip %d Operation %d Address %d Data %d \n",instr.core,instr.chip,instr.op,instr.address,instr.data);
-        
-        if(instr.op == 1){
-            //printf("CALC Processor %d  Chip %d\n",args->coreID,args->chipID);
-            pthread_mutex_unlock(&lock);
-            sleep(10);
+        else if (findAddress(chip0Bus.address,&L1cache) && busRead[args->coreID])
+        {
+            if (chip0Bus.action == 3)
+            {
+                memoryStatus.acction = chip0Bus.action;
+                memoryStatus.addr = chip0Bus.address;
+                memoryStatus.data = chip0Bus.data;
+                memoryStatus = buscacheController(&memoryStatus,&L1cache);
+                processInstr = 1;
+                if(busWriteEnable){
+                    chip0Bus.action = memoryStatus.acction;
+                    chip0Bus.address = memoryStatus.addr;
+                    chip0Bus.data = memoryStatus.data;
+                    chip0Bus.id = args->coreID;
+                }
+                else{
+                    request = memoryStatus;
+                    waitingbusAccess = 1;
+                }
+            }
+            else{
+                memoryStatus.acction = chip0Bus.action;
+                memoryStatus.addr = chip0Bus.address;
+                memoryStatus.data = chip0Bus.data;
+                memoryStatus = buscacheController(&memoryStatus,&L1cache);
+                printf("Invalidated");  
+            }
+        }
+        else if(waitingbusAccess && busWriteEnable){
+            chip0Bus.action = request.acction;
+            chip0Bus.address = request.addr;
+            chip0Bus.data = request.data;
+            chip0Bus.id = args->coreID;
+            waitingRequest = 1;
+        }
+        else if (processInstr)
+        {
+            memoryStatus = prcacheController(&instr,&L1cache);
         }
         else
         {
-            privateMessage L1message = prcacheController(&instr,&L1mem);
-            if (L1message.acction == 0)
-            {
-                //printf("Accion con exito \n");
-                sleep(10);
-                pthread_mutex_unlock(&lock);
-            }
-            else
-            {
-                printf("Message Address %d  Operation  %d \n",L1message.addr,L1message.acction);
-                pthread_mutex_unlock(&lock);
-                //Aqui sigue la mauren
-                sleep(10);
-            }
+            intGenPoisson(&instr,opSeed,dirSeed,args->coreID,args->chipID);
         }
-    }
+        
+        
+        
    
+   
+        pthread_mutex_unlock(&lock);
+    }
+    
+    
+    
+    
+    
+    
+    //;
     gsl_rng_free (opSeed);
     gsl_rng_free (dirSeed);
 
@@ -107,26 +162,22 @@ void *processor(void * attr){
 
 int main(){
 
-    snoopflag[0] = 1;
-    snoopflag[1] = 1;
+  
     srand(time(0)); 
     
     pthread_t tid[2];
 
-    //instruction * iL1;
-
-    //bus chip0Bus;
+   
 
     thredattr  P00;
     P00.chipID = 0;
     P00.coreID = 0;
-    //P00.busDir = &chip0Bus;
     
 
     thredattr P01 ;
     P01.chipID = 0;
     P01.coreID = 1;
-    //P01.busDir = &chip0Bus;
+   
 
     pthread_create(&tid[0],NULL,processor,&P00);
 
@@ -138,11 +189,6 @@ int main(){
     }
     
     pthread_mutex_destroy(&lock);
-
-
-
-    
-
     pthread_exit(NULL);
     return  0;
 }
