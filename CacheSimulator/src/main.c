@@ -47,7 +47,6 @@ void *processor(void * attr){
 
     //Messages 
     privateMessage request;
-    privateMessage tempRequest;
     privateMessage  memoryStatus;
 
     //Flags
@@ -60,8 +59,6 @@ void *processor(void * attr){
 
     while(1){
         pthread_mutex_lock(&lock);
-        //Check if address is in L1
-        
         if(request.addr == chip0Bus.address && busRead[args->coreID]){
             if(request.acction != chip0Bus.action){
                 //Cancel previous request
@@ -123,6 +120,11 @@ void *processor(void * attr){
                 printf("Invalidated");  
             }
         }
+        else if (waitingRequest)
+        {
+            printf("Processor Waiting");
+        }
+        
         else if(waitingbusAccess && busWriteEnable){
             chip0Bus.action = request.acction;
             chip0Bus.address = request.addr;
@@ -133,16 +135,45 @@ void *processor(void * attr){
         else if (processInstr)
         {
             memoryStatus = prcacheController(&instr,&L1cache);
+            if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
+                if(busWriteEnable){
+                    chip0Bus.action = memoryStatus.acction;
+                    chip0Bus.address = memoryStatus.addr;
+                    chip0Bus.data = memoryStatus.data;
+                    chip0Bus.id = args->coreID;
+                }
+                else{
+                    request = memoryStatus;
+                    waitingbusAccess = 1;
+                }
+            }
+            else
+            {
+                printf("Status");
+            }
+            
         }
         else
         {
             intGenPoisson(&instr,opSeed,dirSeed,args->coreID,args->chipID);
+            memoryStatus = prcacheController(&instr,&L1cache);
+            if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
+                if(busWriteEnable){
+                    chip0Bus.action = memoryStatus.acction;
+                    chip0Bus.address = memoryStatus.addr;
+                    chip0Bus.data = memoryStatus.data;
+                    chip0Bus.id = args->coreID;
+                }
+                else{
+                    request = memoryStatus;
+                    waitingbusAccess = 1;
+                }
+            }
+            else
+            {
+                printf("Status");
+            }
         }
-        
-        
-        
-   
-   
         pthread_mutex_unlock(&lock);
     }
     
