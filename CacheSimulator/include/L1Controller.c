@@ -1,4 +1,4 @@
-#include "SnoopingController.h"
+#include "L1Controller.h"
 
 //Handles processor requests
 L1message prcacheController(instruction * newInstruction,L1 * L1cache){

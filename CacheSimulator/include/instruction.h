@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
-
-
 #ifndef CACHESIMULATOR_INSTRUCTION_H
 #define CACHESIMULATOR_INSTRUCTION_H
+#include <stdio.h>
 
 typedef struct {
     unsigned int core : 1;
@@ -13,7 +9,4 @@ typedef struct {
     unsigned int address :5;
     int32_t data;
 } instruction;
-
-//instruction * intrGenerator(unsigned int core, unsigned int chip);
-
 #endif //CACHESIMULATOR_INSTRUCTION_H

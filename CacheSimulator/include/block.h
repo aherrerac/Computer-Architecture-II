@@ -3,16 +3,16 @@
 typedef struct
 {
     unsigned int id :1;
-}processor ;
+}bit ;
 
 typedef struct 
 {
-    processor bit[4];
+    bit bit[4];
 } bitArray;
 
 typedef struct {
     unsigned int id : 1;
-    unsigned int state: 4;
+    unsigned int state: 3;
     unsigned int address : 5;
     int32_t data;
 } L1block;

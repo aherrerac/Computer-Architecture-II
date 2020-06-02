@@ -1,7 +1,3 @@
-//
-// Created by aherrerac on 5/5/20.
-//
-
 #ifndef CACHESIMULATOR_MESSAGE_H
 #define CACHESIMULATOR_MESSAGE_H
 
@@ -24,6 +20,7 @@ typedef struct
     int data;
     int sharedExternal;
     int shared;
+    int chip;
 } Mmessage;
 
 typedef struct 

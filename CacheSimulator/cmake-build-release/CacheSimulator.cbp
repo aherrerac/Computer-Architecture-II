@@ -76,10 +76,10 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c">
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L1Controller.c">
 			<Option target="CacheSimulator"/>
 		</Unit>
-		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.h">
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L1Controller.h">
 			<Option target="CacheSimulator"/>
 		</Unit>
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.c">
@@ -88,10 +88,10 @@
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.h">
 			<Option target="CacheSimulator"/>
 		</Unit>
-		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c">
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/MemController.c">
 			<Option target="CacheSimulator"/>
 		</Unit>
-		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.h">
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/MemController.h">
 			<Option target="CacheSimulator"/>
 		</Unit>
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/block.h">
@@ -101,9 +101,6 @@
 			<Option target="CacheSimulator"/>
 		</Unit>
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/cache.h">
-			<Option target="CacheSimulator"/>
-		</Unit>
-		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c">
 			<Option target="CacheSimulator"/>
 		</Unit>
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.h">

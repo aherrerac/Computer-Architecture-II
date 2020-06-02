@@ -7,35 +7,38 @@
 #include <unistd.h>
 #include "../include/instruction.h"
 #include "../include/randomPoisson.h"
-#include "../include/SnoopingController.h"
+#include "../include/L1Controller.h"
 #include "../include/message.h"
 #include "../include/bus.h"
 #include "../include/memory.h"
 #include "../include/L2Controller.h"
+#include "../include/MemController.h"
 
-//Hacer lista de buses;
 //Buses
-bus chip0Bus;
-
+bus chipBus[2];
 membus memBus;
 
 typedef struct
 {
-    int coreID;
-    int chipID;
+    unsigned int coreID : 1;
+    unsigned int chipID : 1;
 } thredattr;
 
+
+//TODO: Pasar el coreId al controller
 typedef struct 
 {
    int CoreID;
 } controllerattr;
 
 
-int busReadPr[2];
+//Read Flag Controller
+int busReadPr[4];
 
+//Read Flag Directory
 int busReadCr[2];
 
-
+//Pthread mutex, lock global variables
 pthread_mutex_t lock;
 
 void *processor(void * attr){
@@ -58,7 +61,13 @@ void *processor(void * attr){
 
     //Init cache
     L1 L1cache;
-
+    for (int i = 0; i < 2; i++)
+    {
+        L1cache.l1Blocks[i].id = i;
+        L1cache.l1Blocks[i].state = 3;
+        L1cache.l1Blocks[i].data = 0;
+        L1cache.l1Blocks[i].address = 0;
+    }
     //Messages 
     L1message request;
     L1message memoryStatus;
@@ -66,28 +75,30 @@ void *processor(void * attr){
     //Flags
     int waitingRequest = 0;
     int processInstr = 0;
-    int busWriteEnable = 0;
     int waitingbusAccess = 0;
+
     //Instruction 
     instruction instr;
 
+    int busWriteID = getPosition(args->coreID,args->coreID);
+
     while(1){
         pthread_mutex_lock(&lock);
-        if(request.addr == chip0Bus.address && busReadPr[args->coreID]){
-            if(request.acction != chip0Bus.action){
+        if(request.addr == chipBus[args->chipID].address && busReadPr[args->coreID]){
+            if(request.acction != chipBus[args->chipID].action){
                 //Hacer cambios
                 //Cancel previous request
-                memoryStatus.acction = chip0Bus.action;
-                memoryStatus.addr = chip0Bus.address;
-                memoryStatus.data = chip0Bus.data;
+                memoryStatus.acction = chipBus[args->chipID].action;
+                memoryStatus.addr = chipBus[args->chipID].address;
+                memoryStatus.data = chipBus[args->chipID].data;
                 memoryStatus = buscacheController(&memoryStatus,&L1cache);
                 
                 if (memoryStatus.acction == 3){
-                    if(busWriteEnable){
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = args->coreID;
+                    if(busReadPr[busWriteID]){
+                        chipBus[args->chipID].action = memoryStatus.acction;
+                        chipBus[args->chipID].address = memoryStatus.addr;
+                        chipBus[args->chipID].data = memoryStatus.data;
+                        chipBus[args->chipID].id = args->coreID;
                     }
                     else{
                         request = memoryStatus;
@@ -99,29 +110,29 @@ void *processor(void * attr){
             }
             else{
                 waitingRequest = 0;
-                memoryStatus.acction = chip0Bus.action;
-                memoryStatus.addr = chip0Bus.address;
-                memoryStatus.data = chip0Bus.data;
+                memoryStatus.acction = chipBus[args->chipID].action;
+                memoryStatus.addr = chipBus[args->chipID].address;
+                memoryStatus.data = chipBus[args->chipID].data;
                 memoryStatus = buscacheController(&memoryStatus,&L1cache);
                 printf("Se actualizo memoria");
                 processInstr = 1;
                 //Cambiar el valor de readEnable
             }
         }
-        else if (findAddress(chip0Bus.address,&L1cache) && busReadPr[args->coreID])
+        else if (findAddress(chipBus[args->chipID].address,&L1cache) && busReadPr[args->coreID])
         {
-            if (chip0Bus.action == 3)
+            if (chipBus[args->chipID].action == 3)
             {
-                memoryStatus.acction = chip0Bus.action;
-                memoryStatus.addr = chip0Bus.address;
-                memoryStatus.data = chip0Bus.data;
+                memoryStatus.acction = chipBus[args->chipID].action;
+                memoryStatus.addr = chipBus[args->chipID].address;
+                memoryStatus.data = chipBus[args->chipID].data;
                 memoryStatus = buscacheController(&memoryStatus,&L1cache);
                 processInstr = 1;
-                if(busWriteEnable){
-                    chip0Bus.action = memoryStatus.acction;
-                    chip0Bus.address = memoryStatus.addr;
-                    chip0Bus.data = memoryStatus.data;
-                    chip0Bus.id = args->coreID;
+                if(busReadPr[busWriteID]){
+                    chipBus[args->chipID].action = memoryStatus.acction;
+                    chipBus[args->chipID].address = memoryStatus.addr;
+                    chipBus[args->chipID].data = memoryStatus.data;
+                    chipBus[args->chipID].id = args->coreID;
                 }
                 else{
                     request = memoryStatus;
@@ -129,9 +140,9 @@ void *processor(void * attr){
                 }
             }
             else{
-                memoryStatus.acction = chip0Bus.action;
-                memoryStatus.addr = chip0Bus.address;
-                memoryStatus.data = chip0Bus.data;
+                memoryStatus.acction = chipBus[args->chipID].action;
+                memoryStatus.addr = chipBus[args->chipID].address;
+                memoryStatus.data = chipBus[args->chipID].data;
                 memoryStatus = buscacheController(&memoryStatus,&L1cache);
                 printf("Invalidated");  
             }
@@ -141,22 +152,22 @@ void *processor(void * attr){
             printf("Processor Waiting");
         }
         
-        else if(waitingbusAccess && busWriteEnable){
-            chip0Bus.action = request.acction;
-            chip0Bus.address = request.addr;
-            chip0Bus.data = request.data;
-            chip0Bus.id = args->coreID;
+        else if(waitingbusAccess && busReadPr[busWriteID]){
+            chipBus[args->chipID].action = request.acction;
+            chipBus[args->chipID].address = request.addr;
+            chipBus[args->chipID].data = request.data;
+            chipBus[args->chipID].id = args->coreID;
             waitingRequest = 1;
         }
         else if (processInstr)
         {
             memoryStatus = prcacheController(&instr,&L1cache); //Agregar que pasa con write back
             if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
-                if(busWriteEnable){
-                    chip0Bus.action = memoryStatus.acction;
-                    chip0Bus.address = memoryStatus.addr;
-                    chip0Bus.data = memoryStatus.data;
-                    chip0Bus.id = args->coreID;
+                if(busReadPr[busWriteID]){
+                    chipBus[args->chipID].action = memoryStatus.acction;
+                    chipBus[args->chipID].address = memoryStatus.addr;
+                    chipBus[args->chipID].data = memoryStatus.data;
+                    chipBus[args->chipID].id = args->coreID;
                 }
                 else{
                     request = memoryStatus;
@@ -174,11 +185,11 @@ void *processor(void * attr){
             intGenPoisson(&instr,opSeed,dirSeed,args->coreID,args->chipID);
             memoryStatus = prcacheController(&instr,&L1cache); //agregar que pasa con write back
             if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
-                if(busWriteEnable){
-                    chip0Bus.action = memoryStatus.acction;
-                    chip0Bus.address = memoryStatus.addr;
-                    chip0Bus.data = memoryStatus.data;
-                    chip0Bus.id = args->coreID;
+                if(busReadPr[busWriteID]){
+                    chipBus[args->chipID].action = memoryStatus.acction;
+                    chipBus[args->chipID].address = memoryStatus.addr;
+                    chipBus[args->chipID].data = memoryStatus.data;
+                    chipBus[args->chipID].id = args->coreID;
                 }
                 else{
                     request = memoryStatus;
@@ -242,20 +253,20 @@ void *controller(void * attr){
                     {
                         busReadPr[0] = 1;
                         busReadPr[1] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0;
                         waitingPrRequest = 1; 
                     }
                     else
                     {
                         busReadPr[memoryStatus.id] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0;
                         waitingPrRequest = 1;  
                     }
@@ -277,20 +288,20 @@ void *controller(void * attr){
                     {
                         busReadPr[0] = 1;
                         busReadPr[1] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0; 
                         waitingPrRequest = 1; 
                     }
                     else
                     {
                         busReadPr[memoryStatus.id] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0; 
                         waitingPrRequest = 1; 
                     }
@@ -308,20 +319,20 @@ void *controller(void * attr){
                     {
                         busReadPr[0] = 1;
                         busReadPr[1] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0;
                         waitingPrRequest = 1; 
                     }
                     else
                     {
                         busReadPr[memoryStatus.id] = 1;
-                        chip0Bus.action = memoryStatus.acction;
-                        chip0Bus.address = memoryStatus.addr;
-                        chip0Bus.data = memoryStatus.data;
-                        chip0Bus.id = memoryStatus.id;
+                        chipBus[args->CoreID].action = memoryStatus.acction;
+                        chipBus[args->CoreID].address = memoryStatus.addr;
+                        chipBus[args->CoreID].data = memoryStatus.data;
+                        chipBus[args->CoreID].id = memoryStatus.id;
                         busReadCr[args->CoreID] = 0;
                         waitingPrRequest = 1;  
                     }
@@ -366,10 +377,10 @@ void *controller(void * attr){
                 memoryStatus.id = memBus.id;
                 memoryStatus = buscacheL2Controller(&memoryStatus,&L2cache);
                 busReadPr[1] = 1;
-                chip0Bus.action = memoryStatus.acction;
-                chip0Bus.address = memoryStatus.addr;
-                chip0Bus.data = memoryStatus.data;
-                chip0Bus.id = memoryStatus.id;
+                chipBus[args->CoreID].action = memoryStatus.acction;
+                chipBus[args->CoreID].address = memoryStatus.addr;
+                chipBus[args->CoreID].data = memoryStatus.data;
+                chipBus[args->CoreID].id = memoryStatus.id;
                 busReadCr[args->CoreID] = 0;
                 waitingPrRequest = 1; 
             }
@@ -380,16 +391,16 @@ void *controller(void * attr){
         }
         else if(!writeEnable[0] && !writeEnable[1]) 
         {
-            memoryStatus.acction = chip0Bus.action;
-            memoryStatus.addr = chip0Bus.address;
-            memoryStatus.id = chip0Bus.id;
-            memoryStatus.addr = chip0Bus.address;
+            memoryStatus.acction = chipBus[args->CoreID].action;
+            memoryStatus.addr = chipBus[args->CoreID].address;
+            memoryStatus.id = chipBus[args->CoreID].id;
+            memoryStatus.addr = chipBus[args->CoreID].address;
             memoryStatus = prcacheL2Controller(&memoryStatus,&L2cache);
             if (memoryStatus.acction == 0 || memoryStatus.acction == 1){
-                chip0Bus.action = memoryStatus.acction;
-                chip0Bus.address = memoryStatus.addr;
-                chip0Bus.data = memoryStatus.data;
-                chip0Bus.id = memoryStatus.id;
+                chipBus[args->CoreID].action = memoryStatus.acction;
+                chipBus[args->CoreID].address = memoryStatus.addr;
+                chipBus[args->CoreID].data = memoryStatus.data;
+                chipBus[args->CoreID].id = memoryStatus.id;
                 busReadCr[args->CoreID] = 0;
                 waitingPrRequest = 1; 
             }
@@ -415,10 +426,10 @@ void *controller(void * attr){
             } 
             else
             {
-                chip0Bus.action = memoryStatus.acction;
-                chip0Bus.address = memoryStatus.addr;
-                chip0Bus.data = memoryStatus.data;
-                chip0Bus.id = memoryStatus.id;
+                chipBus[args->CoreID].action = memoryStatus.acction;
+                chipBus[args->CoreID].address = memoryStatus.addr;
+                chipBus[args->CoreID].data = memoryStatus.data;
+                chipBus[args->CoreID].id = memoryStatus.id;
                 busReadCr[args->CoreID] = 0;
                 waitingPrRequest = 1; 
             }
@@ -434,7 +445,8 @@ void *controller(void * attr){
 }
 
 
-void *memory(void * attr){
+/*void *memory(void * attr){
+    memory memory;
 
     if(1)//Mensaje pendente
     {
@@ -448,12 +460,18 @@ void *memory(void * attr){
         //waiting
     }
 
-}
+}*/
 
 int main(){
-
-  
     srand(time(0)); 
+
+    for (int i = 0; i < 2; i++)
+    {
+        chipBus[i].action = 0;
+        chipBus[i].address = 0;
+        chipBus[i].data = 0;
+        chipBus[i].id = 0;
+    }
     
     pthread_t tid[2];
 

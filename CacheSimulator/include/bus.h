@@ -1,7 +1,3 @@
-//
-// Created by aherrerac on 30/5/20.
-//
-
 #ifndef CACHESIMULATOR_BUS_H
 #define CACHESIMULATOR_BUS_H
 
@@ -17,6 +13,7 @@ typedef struct
 
 typedef struct
 {
+    unsigned int chip : 1;
     unsigned int action : 3;
     unsigned int id : 1;
     unsigned int shared : 1;

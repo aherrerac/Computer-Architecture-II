@@ -123,32 +123,32 @@ CacheSimulator/fast:
 	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/build
 .PHONY : CacheSimulator/fast
 
-include/DirectoryController.o: include/DirectoryController.c.o
+include/L1Controller.o: include/L1Controller.c.o
 
-.PHONY : include/DirectoryController.o
+.PHONY : include/L1Controller.o
 
 # target to build an object file
-include/DirectoryController.c.o:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o
-.PHONY : include/DirectoryController.c.o
+include/L1Controller.c.o:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o
+.PHONY : include/L1Controller.c.o
 
-include/DirectoryController.i: include/DirectoryController.c.i
+include/L1Controller.i: include/L1Controller.c.i
 
-.PHONY : include/DirectoryController.i
+.PHONY : include/L1Controller.i
 
 # target to preprocess a source file
-include/DirectoryController.c.i:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.i
-.PHONY : include/DirectoryController.c.i
+include/L1Controller.c.i:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L1Controller.c.i
+.PHONY : include/L1Controller.c.i
 
-include/DirectoryController.s: include/DirectoryController.c.s
+include/L1Controller.s: include/L1Controller.c.s
 
-.PHONY : include/DirectoryController.s
+.PHONY : include/L1Controller.s
 
 # target to generate assembly for a file
-include/DirectoryController.c.s:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.s
-.PHONY : include/DirectoryController.c.s
+include/L1Controller.c.s:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L1Controller.c.s
+.PHONY : include/L1Controller.c.s
 
 include/L2Controller.o: include/L2Controller.c.o
 
@@ -177,59 +177,32 @@ include/L2Controller.c.s:
 	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L2Controller.c.s
 .PHONY : include/L2Controller.c.s
 
-include/SnoopingController.o: include/SnoopingController.c.o
+include/MemController.o: include/MemController.c.o
 
-.PHONY : include/SnoopingController.o
-
-# target to build an object file
-include/SnoopingController.c.o:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o
-.PHONY : include/SnoopingController.c.o
-
-include/SnoopingController.i: include/SnoopingController.c.i
-
-.PHONY : include/SnoopingController.i
-
-# target to preprocess a source file
-include/SnoopingController.c.i:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.i
-.PHONY : include/SnoopingController.c.i
-
-include/SnoopingController.s: include/SnoopingController.c.s
-
-.PHONY : include/SnoopingController.s
-
-# target to generate assembly for a file
-include/SnoopingController.c.s:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.s
-.PHONY : include/SnoopingController.c.s
-
-include/instruction.o: include/instruction.c.o
-
-.PHONY : include/instruction.o
+.PHONY : include/MemController.o
 
 # target to build an object file
-include/instruction.c.o:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/instruction.c.o
-.PHONY : include/instruction.c.o
+include/MemController.c.o:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/MemController.c.o
+.PHONY : include/MemController.c.o
 
-include/instruction.i: include/instruction.c.i
+include/MemController.i: include/MemController.c.i
 
-.PHONY : include/instruction.i
+.PHONY : include/MemController.i
 
 # target to preprocess a source file
-include/instruction.c.i:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/instruction.c.i
-.PHONY : include/instruction.c.i
+include/MemController.c.i:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/MemController.c.i
+.PHONY : include/MemController.c.i
 
-include/instruction.s: include/instruction.c.s
+include/MemController.s: include/MemController.c.s
 
-.PHONY : include/instruction.s
+.PHONY : include/MemController.s
 
 # target to generate assembly for a file
-include/instruction.c.s:
-	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/instruction.c.s
-.PHONY : include/instruction.c.s
+include/MemController.c.s:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/MemController.c.s
+.PHONY : include/MemController.c.s
 
 include/randomPoisson.o: include/randomPoisson.c.o
 
@@ -294,18 +267,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... CacheSimulator"
-	@echo "... include/DirectoryController.o"
-	@echo "... include/DirectoryController.i"
-	@echo "... include/DirectoryController.s"
+	@echo "... include/L1Controller.o"
+	@echo "... include/L1Controller.i"
+	@echo "... include/L1Controller.s"
 	@echo "... include/L2Controller.o"
 	@echo "... include/L2Controller.i"
 	@echo "... include/L2Controller.s"
-	@echo "... include/SnoopingController.o"
-	@echo "... include/SnoopingController.i"
-	@echo "... include/SnoopingController.s"
-	@echo "... include/instruction.o"
-	@echo "... include/instruction.i"
-	@echo "... include/instruction.s"
+	@echo "... include/MemController.o"
+	@echo "... include/MemController.i"
+	@echo "... include/MemController.s"
 	@echo "... include/randomPoisson.o"
 	@echo "... include/randomPoisson.i"
 	@echo "... include/randomPoisson.s"

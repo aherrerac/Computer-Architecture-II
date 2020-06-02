@@ -70,35 +70,22 @@ CMakeFiles/CacheSimulator.dir/src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/src/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/src/main.c -o CMakeFiles/CacheSimulator.dir/src/main.c.s
 
-CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o: CMakeFiles/CacheSimulator.dir/flags.make
-CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o: ../include/SnoopingController.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c
+CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o: CMakeFiles/CacheSimulator.dir/flags.make
+CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o: ../include/L1Controller.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L1Controller.c
 
-CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c > CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.i
+CMakeFiles/CacheSimulator.dir/include/L1Controller.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CacheSimulator.dir/include/L1Controller.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L1Controller.c > CMakeFiles/CacheSimulator.dir/include/L1Controller.c.i
 
-CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c -o CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.s
-
-CMakeFiles/CacheSimulator.dir/include/instruction.c.o: CMakeFiles/CacheSimulator.dir/flags.make
-CMakeFiles/CacheSimulator.dir/include/instruction.c.o: ../include/instruction.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/CacheSimulator.dir/include/instruction.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/instruction.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c
-
-CMakeFiles/CacheSimulator.dir/include/instruction.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CacheSimulator.dir/include/instruction.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c > CMakeFiles/CacheSimulator.dir/include/instruction.c.i
-
-CMakeFiles/CacheSimulator.dir/include/instruction.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/instruction.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c -o CMakeFiles/CacheSimulator.dir/include/instruction.c.s
+CMakeFiles/CacheSimulator.dir/include/L1Controller.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/L1Controller.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L1Controller.c -o CMakeFiles/CacheSimulator.dir/include/L1Controller.c.s
 
 CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o: CMakeFiles/CacheSimulator.dir/flags.make
 CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o: ../include/randomPoisson.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/randomPoisson.c
 
 CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.i: cmake_force
@@ -111,7 +98,7 @@ CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.s: cmake_force
 
 CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o: CMakeFiles/CacheSimulator.dir/flags.make
 CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o: ../include/L2Controller.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.c
 
 CMakeFiles/CacheSimulator.dir/include/L2Controller.c.i: cmake_force
@@ -122,40 +109,38 @@ CMakeFiles/CacheSimulator.dir/include/L2Controller.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/L2Controller.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.c -o CMakeFiles/CacheSimulator.dir/include/L2Controller.c.s
 
-CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o: CMakeFiles/CacheSimulator.dir/flags.make
-CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o: ../include/DirectoryController.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c
+CMakeFiles/CacheSimulator.dir/include/MemController.c.o: CMakeFiles/CacheSimulator.dir/flags.make
+CMakeFiles/CacheSimulator.dir/include/MemController.c.o: ../include/MemController.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/CacheSimulator.dir/include/MemController.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/CacheSimulator.dir/include/MemController.c.o   -c /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/MemController.c
 
-CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c > CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.i
+CMakeFiles/CacheSimulator.dir/include/MemController.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/CacheSimulator.dir/include/MemController.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/MemController.c > CMakeFiles/CacheSimulator.dir/include/MemController.c.i
 
-CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c -o CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.s
+CMakeFiles/CacheSimulator.dir/include/MemController.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/CacheSimulator.dir/include/MemController.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/MemController.c -o CMakeFiles/CacheSimulator.dir/include/MemController.c.s
 
 # Object files for target CacheSimulator
 CacheSimulator_OBJECTS = \
 "CMakeFiles/CacheSimulator.dir/src/main.c.o" \
-"CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o" \
-"CMakeFiles/CacheSimulator.dir/include/instruction.c.o" \
+"CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o" \
 "CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o" \
 "CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o" \
-"CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
+"CMakeFiles/CacheSimulator.dir/include/MemController.c.o"
 
 # External object files for target CacheSimulator
 CacheSimulator_EXTERNAL_OBJECTS =
 
 CacheSimulator: CMakeFiles/CacheSimulator.dir/src/main.c.o
-CacheSimulator: CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o
-CacheSimulator: CMakeFiles/CacheSimulator.dir/include/instruction.c.o
+CacheSimulator: CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o
 CacheSimulator: CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o
 CacheSimulator: CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o
-CacheSimulator: CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o
+CacheSimulator: CMakeFiles/CacheSimulator.dir/include/MemController.c.o
 CacheSimulator: CMakeFiles/CacheSimulator.dir/build.make
 CacheSimulator: CMakeFiles/CacheSimulator.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable CacheSimulator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable CacheSimulator"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CacheSimulator.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

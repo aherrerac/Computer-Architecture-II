@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
+  "CMakeFiles/CacheSimulator.dir/include/L1Controller.c.o"
   "CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o"
-  "CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o"
-  "CMakeFiles/CacheSimulator.dir/include/instruction.c.o"
+  "CMakeFiles/CacheSimulator.dir/include/MemController.c.o"
   "CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"
   "CMakeFiles/CacheSimulator.dir/src/main.c.o"
   "CacheSimulator"
