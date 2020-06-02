@@ -11,6 +11,7 @@
 #include "../include/message.h"
 #include "../include/bus.h"
 #include "../include/memory.h"
+#include "../include/L2Controller.h"
 
 //Hacer lista de buses;
 //Buses
@@ -33,6 +34,7 @@ typedef struct
 int busReadPr[2];
 
 int busReadCr[2];
+
 
 pthread_mutex_t lock;
 
@@ -190,13 +192,6 @@ void *processor(void * attr){
         }
         pthread_mutex_unlock(&lock);
     }
-    
-    
-    
-    
-    
-    
-    //;
     gsl_rng_free (opSeed);
     gsl_rng_free (dirSeed);
 
@@ -209,16 +204,21 @@ void *controller(void * attr){
     //Messages 
     L2message request;
     L2message memoryStatus;
+    L2message tempMessage;
 
     //Flags 
     int waitingRequest = 0;
-    int processInstr = 0;
+    int processMessage = 0;
     int busWriteEnable = 0;
     int waitingbusAccess = 0;
     int waitingPrRequest = 0;
     int waitingBusRequest = 0;
+    int writeEnable[2] = 0;
 
+    int writeEnable[2];
     controllerattr * args = (controllerattr *) attr;
+
+    L2 L2cache;
 
     while (1)
     {
@@ -227,95 +227,207 @@ void *controller(void * attr){
             if (waitingbusAccess)
             {
                 if (memBus.action == request.acction)
-                {   //1
-                    //Invalido accion del request
-                    //Invalido que los procesadores escriban
-                    if (1) // Necesito valor de procesadores
+                {   //Cancelo del todo el request pendiente
+                    waitingbusAccess = 0;
+                    //Reseteo valores de request de salida del bus
+                    writeEnable[0] = 0;
+                    writeEnable[1] = 0;
+                    memoryStatus.acction = memBus.action;
+                    memoryStatus.addr = memBus.address;
+                    memoryStatus.data = memBus.data;
+                    memoryStatus.sharedExternal = memBus.shared;
+                    memoryStatus.id = memBus.id;
+                    memoryStatus = buscacheL2Controller(&memoryStatus,&L2cache);
+                    if (memoryStatus.shared)
                     {
-                       //Escribo
-                    //Agrego procesadores a leer 
-                    //Espero request
+                        busReadPr[0] = 1;
+                        busReadPr[1] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0;
+                        waitingPrRequest = 1; 
                     }
                     else
                     {
-                        //respondo de una vez y
-                        //Cambio mi variable de lectura 
+                        busReadPr[memoryStatus.id] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0;
+                        waitingPrRequest = 1;  
                     }
 
                 }
                 else
                 {
-                    //Guardo el proceso que va hacia abajo y
-                    //Ejecuto lo de arriba
-                    if (1)//Necesito procesadores
+                    writeEnable[0] = 0;
+                    writeEnable[1] = 0;
+                    processMessage = 1;
+                    tempMessage = request;
+                    memoryStatus.acction = memBus.action;
+                    memoryStatus.addr = memBus.address;
+                    memoryStatus.data = memBus.data;
+                    memoryStatus.sharedExternal = memBus.shared;
+                    memoryStatus.id = memBus.id;
+                    memoryStatus = buscacheL2Controller(&memoryStatus,&L2cache);
+                    if (memoryStatus.shared)
                     {
-                        /* code */
+                        busReadPr[0] = 1;
+                        busReadPr[1] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0; 
+                        waitingPrRequest = 1; 
                     }
                     else
                     {
-                        //No necesito
+                        busReadPr[memoryStatus.id] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0; 
+                        waitingPrRequest = 1; 
                     }
                 }
     
-            }
+            } //No pending messages
             else{
-                if (1)//Requiero procesador)
-                {
-                    //Hace lo mismo del punto 1
-                }
-                else{
-                    //Realizo el manejo de memoria y devuelvo el dato
-                }
-                
+                memoryStatus.acction = memBus.action;
+                    memoryStatus.addr = memBus.address;
+                    memoryStatus.data = memBus.data;
+                    memoryStatus.sharedExternal = memBus.shared;
+                    memoryStatus.id = memBus.id;
+                    memoryStatus = buscacheL2Controller(&memoryStatus,&L2cache);
+                    if (memoryStatus.shared)
+                    {
+                        busReadPr[0] = 1;
+                        busReadPr[1] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0;
+                        waitingPrRequest = 1; 
+                    }
+                    else
+                    {
+                        busReadPr[memoryStatus.id] = 1;
+                        chip0Bus.action = memoryStatus.acction;
+                        chip0Bus.address = memoryStatus.addr;
+                        chip0Bus.data = memoryStatus.data;
+                        chip0Bus.id = memoryStatus.id;
+                        busReadCr[args->CoreID] = 0;
+                        waitingPrRequest = 1;  
+                    }
             }        
         }
         else if (waitingPrRequest)
         {
-            if(1){ //Ya me leyeron 
-                //Cambio variables de espera 
-                //Contesto 
-                //Paso mi variable de respuesta a cero
-                if(1){ //Es igual al valor que estoy esperando para otro
-                    //Actualizo memoria y envio el dato
+            if(memoryStatus.shared){
+                if(!busReadPr[0] && !busReadPr[1]){
+                    memBus.action = memoryStatus.acction;
+                    memBus.address = memoryStatus.addr;
+                    memBus.data = memoryStatus.addr;
+                    memBus.shared = memoryStatus.sharedExternal;
+                    waitingPrRequest = 0;
                 }
-
+                else{
+                    printf("Waiting Processors");
+                }
             }
             else
             {
-                //Sigo esperando
+                if(!busReadPr[memoryStatus.id]){
+                    memBus.action = memoryStatus.acction;
+                    memBus.address = memoryStatus.addr;
+                    memBus.data = memoryStatus.addr;
+                    memBus.shared = memoryStatus.sharedExternal;
+                    waitingPrRequest = 0;
+                }
+                else
+                {
+                    printf("Waiting Processor");
+                }
+                
             }
         }
         else if(waitingBusRequest){
             if (busReadCr[args->CoreID]){
-                //Leo y contesto la peticion
+                memoryStatus.acction = memBus.action;
+                memoryStatus.addr = memBus.address;
+                memoryStatus.data = memBus.data;
+                memoryStatus.sharedExternal = memBus.shared;
+                memoryStatus.id = memBus.id;
+                memoryStatus = buscacheL2Controller(&memoryStatus,&L2cache);
+                busReadPr[1] = 1;
+                chip0Bus.action = memoryStatus.acction;
+                chip0Bus.address = memoryStatus.addr;
+                chip0Bus.data = memoryStatus.data;
+                chip0Bus.id = memoryStatus.id;
+                busReadCr[args->CoreID] = 0;
+                waitingPrRequest = 1; 
             }
             else
             {
-                //Sigo esperando
+                printf("Espero Bus de Memoria");
             }
         }
-        else if(1) //Alguien escribio los dos tienen enable en cero
+        else if(!writeEnable[0] && !writeEnable[1]) 
         {
-            //Determino si tengo el valor
-            if(1){
-                //Puedo dar el valor
-            }
-            else if (1)//El valor le pertenece a otro
-            {
-                //doy control al procesador y espero
+            memoryStatus.acction = chip0Bus.action;
+            memoryStatus.addr = chip0Bus.address;
+            memoryStatus.id = chip0Bus.id;
+            memoryStatus.addr = chip0Bus.address;
+            memoryStatus = prcacheL2Controller(&memoryStatus,&L2cache);
+            if (memoryStatus.acction == 0 || memoryStatus.acction == 1){
+                chip0Bus.action = memoryStatus.acction;
+                chip0Bus.address = memoryStatus.addr;
+                chip0Bus.data = memoryStatus.data;
+                chip0Bus.id = memoryStatus.id;
+                busReadCr[args->CoreID] = 0;
+                waitingPrRequest = 1; 
             }
             else{
-                //No esta en el chip
-                if(1){
-                    //puedo en viar la peticcion la envio
-                }
-                else{
-                    //Espero 
-                }
+                memBus.action = memoryStatus.acction;
+                memBus.address = memoryStatus.addr;
+                memBus.data = memoryStatus.addr;
+                memBus.shared = memoryStatus.sharedExternal;
+                waitingPrRequest = 0;
             }
+            
         }
-
-
+        else if(processMessage){
+            request = tempMessage;
+            if( 4<= request.acction <= 7){
+                if(writeEnable[args->CoreID]){
+                     memBus.action = memoryStatus.acction;
+                    memBus.address = memoryStatus.addr;
+                    memBus.data = memoryStatus.addr;
+                    memBus.shared = memoryStatus.sharedExternal;
+                    waitingPrRequest = 0;
+                }
+            } 
+            else
+            {
+                chip0Bus.action = memoryStatus.acction;
+                chip0Bus.address = memoryStatus.addr;
+                chip0Bus.data = memoryStatus.data;
+                chip0Bus.id = memoryStatus.id;
+                busReadCr[args->CoreID] = 0;
+                waitingPrRequest = 1; 
+            }
+                   
+        } 
+        else
+        {
+            exit(0);
+        }
         pthread_mutex_unlock(&lock);
     }
     

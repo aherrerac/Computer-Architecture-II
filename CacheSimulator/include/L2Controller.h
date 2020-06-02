@@ -8,9 +8,9 @@
 #include "message.h"
 #include "cache.h"
 
-L2message  prcacheController(L2message * newInstruction,L2 * L2cache);
-L2message buscacheController(L2message* message,L2 * L2cache);
-int findAddress(int address, L1 * L1cache);
+L2message  prcacheL2Controller(L2message * newInstruction,L2 * L2cache);
+L2message buscacheL2Controller(L2message* message,L2 * L2cache);
+int findL2Address(int address, L2 * L2cache);
 
 
 #endif //CACHESIMULATOR_L2CONTROLLER_H

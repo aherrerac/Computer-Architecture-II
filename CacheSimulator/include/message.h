@@ -10,8 +10,9 @@ typedef struct
     int id;
     int acction;
     int addr;
-    int state;
-     int data;
+    int data;
+    int sharedExternal;
+    int shared;
 } L2message;
 
 
