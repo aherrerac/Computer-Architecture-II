@@ -11,10 +11,8 @@
 #include "instruction.h"
 #include "cache.h"
 
-void proController (message * message);
-void busController (message * message);
-privateMessage  prcacheController(instruction * newInstruction,L1 * L1);
-privateMessage buscacheController(privateMessage * message,L1 * L1cache);
+L1message  prcacheController(instruction * newInstruction,L1 * L1);
+L1message buscacheController(L1message * message,L1 * L1cache);
 int findAddress(int address,L1 * L1cache);
 
 #endif //CACHESIMULATOR_SNOOPINGCONTROLLER_H

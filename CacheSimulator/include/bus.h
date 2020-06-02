@@ -14,4 +14,14 @@ typedef struct
     int32_t data;
 } bus;
 
+
+typedef struct
+{
+    unsigned int action : 3;
+    unsigned int id : 1;
+    unsigned int shared : 1;
+    unsigned int address : 4;
+    int32_t data;
+} membus;
+
 #endif //CACHESIMULATOR_BUS_H

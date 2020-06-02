@@ -82,6 +82,12 @@
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.h">
 			<Option target="CacheSimulator"/>
 		</Unit>
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.c">
+			<Option target="CacheSimulator"/>
+		</Unit>
+		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.h">
+			<Option target="CacheSimulator"/>
+		</Unit>
 		<Unit filename="/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c">
 			<Option target="CacheSimulator"/>
 		</Unit>

@@ -1,12 +1,12 @@
 #include "SnoopingController.h"
 
 //Handles processor requests
-privateMessage prcacheController(instruction * newInstruction,L1 * L1cache){
+L1message prcacheController(instruction * newInstruction,L1 * L1cache){
     //Check if address is in cache
     int fhit = 0;
     int i;
     //Memory response
-    privateMessage memResponse; 
+    L1message memResponse; 
     for (i = 0; i <= 1; i++)
     {
         if(L1cache->l1Blocks[i].state != 3){
@@ -79,7 +79,7 @@ privateMessage prcacheController(instruction * newInstruction,L1 * L1cache){
     else if (fhit == 0){
         int location = newInstruction->address%2; // Address new location in cache
         if(L1cache->l1Blocks[location].state == 0){ //Write Back block Modified
-            memResponse.acction = 4; //Write Back
+            memResponse.acction = 3; //Write Back
             memResponse.addr = L1cache->l1Blocks[location].address;
             memResponse.data = L1cache->l1Blocks[location].data;
             return memResponse;
@@ -100,8 +100,8 @@ privateMessage prcacheController(instruction * newInstruction,L1 * L1cache){
     exit(0);
 }
 //Handles bus responses 
-privateMessage buscacheController(privateMessage * message,L1 * L1cache){
-    privateMessage memResponse;
+L1message buscacheController(L1message * message,L1 * L1cache){
+    L1message memResponse;
     int location = message->addr%2;
     switch (message->acction)
     {

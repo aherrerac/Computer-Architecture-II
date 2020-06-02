@@ -150,6 +150,33 @@ include/DirectoryController.c.s:
 	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.s
 .PHONY : include/DirectoryController.c.s
 
+include/L2Controller.o: include/L2Controller.c.o
+
+.PHONY : include/L2Controller.o
+
+# target to build an object file
+include/L2Controller.c.o:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o
+.PHONY : include/L2Controller.c.o
+
+include/L2Controller.i: include/L2Controller.c.i
+
+.PHONY : include/L2Controller.i
+
+# target to preprocess a source file
+include/L2Controller.c.i:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L2Controller.c.i
+.PHONY : include/L2Controller.c.i
+
+include/L2Controller.s: include/L2Controller.c.s
+
+.PHONY : include/L2Controller.s
+
+# target to generate assembly for a file
+include/L2Controller.c.s:
+	$(MAKE) -f CMakeFiles/CacheSimulator.dir/build.make CMakeFiles/CacheSimulator.dir/include/L2Controller.c.s
+.PHONY : include/L2Controller.c.s
+
 include/SnoopingController.o: include/SnoopingController.c.o
 
 .PHONY : include/SnoopingController.o
@@ -270,6 +297,9 @@ help:
 	@echo "... include/DirectoryController.o"
 	@echo "... include/DirectoryController.i"
 	@echo "... include/DirectoryController.s"
+	@echo "... include/L2Controller.o"
+	@echo "... include/L2Controller.i"
+	@echo "... include/L2Controller.s"
 	@echo "... include/SnoopingController.o"
 	@echo "... include/SnoopingController.i"
 	@echo "... include/SnoopingController.s"

@@ -10,9 +10,13 @@
 #include "../include/SnoopingController.h"
 #include "../include/message.h"
 #include "../include/bus.h"
+#include "../include/memory.h"
 
-//Bus
+//Hacer lista de buses;
+//Buses
 bus chip0Bus;
+
+membus memBus;
 
 typedef struct
 {
@@ -20,7 +24,15 @@ typedef struct
     int chipID;
 } thredattr;
 
-int busRead[2];
+typedef struct 
+{
+   int CoreID;
+} controllerattr;
+
+
+int busReadPr[2];
+
+int busReadCr[2];
 
 pthread_mutex_t lock;
 
@@ -46,8 +58,8 @@ void *processor(void * attr){
     L1 L1cache;
 
     //Messages 
-    privateMessage request;
-    privateMessage  memoryStatus;
+    L1message request;
+    L1message memoryStatus;
 
     //Flags
     int waitingRequest = 0;
@@ -59,8 +71,9 @@ void *processor(void * attr){
 
     while(1){
         pthread_mutex_lock(&lock);
-        if(request.addr == chip0Bus.address && busRead[args->coreID]){
+        if(request.addr == chip0Bus.address && busReadPr[args->coreID]){
             if(request.acction != chip0Bus.action){
+                //Hacer cambios
                 //Cancel previous request
                 memoryStatus.acction = chip0Bus.action;
                 memoryStatus.addr = chip0Bus.address;
@@ -90,9 +103,10 @@ void *processor(void * attr){
                 memoryStatus = buscacheController(&memoryStatus,&L1cache);
                 printf("Se actualizo memoria");
                 processInstr = 1;
+                //Cambiar el valor de readEnable
             }
         }
-        else if (findAddress(chip0Bus.address,&L1cache) && busRead[args->coreID])
+        else if (findAddress(chip0Bus.address,&L1cache) && busReadPr[args->coreID])
         {
             if (chip0Bus.action == 3)
             {
@@ -134,7 +148,7 @@ void *processor(void * attr){
         }
         else if (processInstr)
         {
-            memoryStatus = prcacheController(&instr,&L1cache);
+            memoryStatus = prcacheController(&instr,&L1cache); //Agregar que pasa con write back
             if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
                 if(busWriteEnable){
                     chip0Bus.action = memoryStatus.acction;
@@ -156,7 +170,7 @@ void *processor(void * attr){
         else
         {
             intGenPoisson(&instr,opSeed,dirSeed,args->coreID,args->chipID);
-            memoryStatus = prcacheController(&instr,&L1cache);
+            memoryStatus = prcacheController(&instr,&L1cache); //agregar que pasa con write back
             if(memoryStatus.acction != 4 || memoryStatus.acction != 5){
                 if(busWriteEnable){
                     chip0Bus.action = memoryStatus.acction;
@@ -189,7 +203,140 @@ void *processor(void * attr){
     return NULL;
 }
 
+void *controller(void * attr){
+    //Poner quien gana el acceso jeje 
 
+    //Messages 
+    L2message request;
+    L2message memoryStatus;
+
+    //Flags 
+    int waitingRequest = 0;
+    int processInstr = 0;
+    int busWriteEnable = 0;
+    int waitingbusAccess = 0;
+    int waitingPrRequest = 0;
+    int waitingBusRequest = 0;
+
+    controllerattr * args = (controllerattr *) attr;
+
+    while (1)
+    {
+        pthread_mutex_lock(&lock);
+        if(busReadCr[args->CoreID]){
+            if (waitingbusAccess)
+            {
+                if (memBus.action == request.acction)
+                {   //1
+                    //Invalido accion del request
+                    //Invalido que los procesadores escriban
+                    if (1) // Necesito valor de procesadores
+                    {
+                       //Escribo
+                    //Agrego procesadores a leer 
+                    //Espero request
+                    }
+                    else
+                    {
+                        //respondo de una vez y
+                        //Cambio mi variable de lectura 
+                    }
+
+                }
+                else
+                {
+                    //Guardo el proceso que va hacia abajo y
+                    //Ejecuto lo de arriba
+                    if (1)//Necesito procesadores
+                    {
+                        /* code */
+                    }
+                    else
+                    {
+                        //No necesito
+                    }
+                }
+    
+            }
+            else{
+                if (1)//Requiero procesador)
+                {
+                    //Hace lo mismo del punto 1
+                }
+                else{
+                    //Realizo el manejo de memoria y devuelvo el dato
+                }
+                
+            }        
+        }
+        else if (waitingPrRequest)
+        {
+            if(1){ //Ya me leyeron 
+                //Cambio variables de espera 
+                //Contesto 
+                //Paso mi variable de respuesta a cero
+                if(1){ //Es igual al valor que estoy esperando para otro
+                    //Actualizo memoria y envio el dato
+                }
+
+            }
+            else
+            {
+                //Sigo esperando
+            }
+        }
+        else if(waitingBusRequest){
+            if (busReadCr[args->CoreID]){
+                //Leo y contesto la peticion
+            }
+            else
+            {
+                //Sigo esperando
+            }
+        }
+        else if(1) //Alguien escribio los dos tienen enable en cero
+        {
+            //Determino si tengo el valor
+            if(1){
+                //Puedo dar el valor
+            }
+            else if (1)//El valor le pertenece a otro
+            {
+                //doy control al procesador y espero
+            }
+            else{
+                //No esta en el chip
+                if(1){
+                    //puedo en viar la peticcion la envio
+                }
+                else{
+                    //Espero 
+                }
+            }
+        }
+
+
+        pthread_mutex_unlock(&lock);
+    }
+    
+}
+
+
+void *memory(void * attr){
+
+    if(1)//Mensaje pendente
+    {
+        if(1) {
+            }//puedo contestar
+        else{
+            //paso el control a otro
+        }
+    }
+    else{
+        //waiting
+    }
+
+}
 
 int main(){
 

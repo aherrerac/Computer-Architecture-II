@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/DirectoryController.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/DirectoryController.c.o"
+  "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/L2Controller.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/L2Controller.c.o"
   "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/SnoopingController.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/SnoopingController.c.o"
   "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/instruction.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/instruction.c.o"
   "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/include/randomPoisson.c" "/home/aherrerac/Documents/Computer-Architecure-II/CacheSimulator/cmake-build-debug/CMakeFiles/CacheSimulator.dir/include/randomPoisson.c.o"

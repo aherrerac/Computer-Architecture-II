@@ -8,27 +8,19 @@
 typedef struct 
 {
     int id;
-    int request;
+    int acction;
     int addr;
     int state;
-} message;
+     int data;
+} L2message;
 
-typedef struct 
-{
-    int type;
-    int source;
-    int state;
-    int destination;
-    int address;
-    int id; 
-} nodeMessage;
 
 typedef struct 
 {
     int acction;
     int addr;
     int data;
-} privateMessage;
+} L1message;
 
 
 
