@@ -18,6 +18,16 @@ typedef struct
 
 typedef struct 
 {
+    int id;
+    int acction;
+    int addr;
+    int data;
+    int sharedExternal;
+    int shared;
+} Mmessage;
+
+typedef struct 
+{
     int acction;
     int addr;
     int data;

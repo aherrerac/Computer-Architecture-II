@@ -1,5 +1,15 @@
 #include <stdint.h>
 
+typedef struct
+{
+    unsigned int id :1;
+}processor ;
+
+typedef struct 
+{
+    processor bit[4];
+} bitArray;
+
 typedef struct {
     unsigned int id : 1;
     unsigned int state: 4;
@@ -17,12 +27,9 @@ typedef struct {
 } L2block ;
 
 typedef struct {
-    unsigned int dBit : 1;
-    unsigned int vBit : 1;
-    unsigned int sBit : 1;
-    unsigned int pOwner : 1;
+    unsigned int state : 2;
     unsigned int id : 5;
     int32_t data;
-    //TODO: Bit array; 
+    bitArray procs; 
     int chips[2];
 } mblock;
