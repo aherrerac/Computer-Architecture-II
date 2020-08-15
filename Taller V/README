@@ -1,0 +1,33 @@
+Instituto Tecnologico de Costa Rica
+Area Academica de Ingenieria en Computadores
+Arquitectura de Computadores Instituto
+Taller VI : OpenCL
+
+Instrucciones de Uso: 
+
+Ejecucion SAXPY
+
+1. Navegar a la carpeta SAXPY 
+2. Ejecutar: 
+            gcc -o saxpy  saxpy.c -lOpenCL
+            ./saxpy
+
+Ejecucion Multiplicacion de Matrices
+
+1. Navegar a la carpeta Multiplicacion 
+2. Ejecutar: 
+            gcc -o mxmul  mxmul.c -lOpenCL
+            ./mxmul
+
+
+
+Ejecucion carpeta src
+
+Devices 
+        gcc -o devices devices.c -lOpenCL
+        ./devices
+
+Hello
+        gcc -o hello hello.c -lOpenCL
+        ./hello
+

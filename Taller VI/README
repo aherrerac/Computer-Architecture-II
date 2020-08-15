@@ -1,0 +1,29 @@
+Comandos necesarios para compilar los archivos:
+
+Nota: Para ejecutar los archivos MPI, se necesita una configuracion previa,
+esta se encuentra en el documento Taller6_MPI.pdf
+
+
+Archivos con MPI: 
+
+hello_mpi.c
+
+sum_mpi.c
+
+matrix_mul.c
+
+mpicc <nombre_entrada.c> -o <nombre_salida>
+
+mpiexec -n 8 -f machinefile ./<nombre_salida>
+
+Nota: -n 8 indica la cantidad de procesos
+
+Archivos Seriales: 
+
+matrix_mul_serial.c
+
+gcc matrix_mul_serial.c -o matrix_mul
+
+./matrix_mul
+
+	

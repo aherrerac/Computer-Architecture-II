@@ -1,0 +1,46 @@
+Resultados SAXPY 
+
+Serial 
+
+SAXPY -> Array size = 15000000 in 0.047818 seconds
+SAXPY -> Array size = 30000000 in 0.096789 seconds
+SAXPY -> Array size = 45000000 in 0.144265 seconds
+
+
+Paralelo 
+
+SAXPY -> Array size = 10000000 in 0.045407 seconds 
+SAXPY -> Array size = 15000000 in 0.057384 seconds 
+SAXPY -> Array size = 30000000 in 0.091989 seconds 
+
+
+Resultados de euler 
+
+Serial -> e is 2.71828 in 0.099382 seconds array size = 10000000 
+
+Parallel -> e is 2.71828 in 0.045208 seconds array size = 10000000 
+
+Serial -> e is 2.71828 in 0.189376 seconds array size = 20000000 
+
+Parallel -> e is 2.71828 in 0.061050 seconds array size = 20000000 
+
+Serial -> e is 2.71828 in 0.282206 seconds array size = 30000000 
+
+Parallel -> e is 2.71828 in 0.085407 seconds array size = 30000000 
+
+Serial -> e is 2.71828 in 0.374716 seconds array size = 40000000 
+
+Parallel -> e is 2.71828 in 0.115477 seconds array size = 40000000 
+
+Serial -> e is 2.71828 in 0.468358 seconds array size = 50000000 
+
+Parallel -> e is 2.71828 in 0.155330 seconds array size = 50000000 
+
+Serial -> e is 2.71828 in 0.563208 seconds array size = 60000000 
+
+Parallel -> e is 2.71828 in 0.183352 seconds array size = 60000000 
+
+Resultados Producto Punto 
+
+Not OMP Array size = 50000000 in 0.309145 seconds
+OMP + NEON Array size = 50000000 in 0.074374 seconds

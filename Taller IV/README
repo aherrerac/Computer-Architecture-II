@@ -1,0 +1,87 @@
+Instituto Tecnológico de Costa Rica
+Área Académica de Ingeniería en Computadores
+Arquitectura de Computadores II 
+
+Elaborado por: 
+                André Herrera Chacón
+
+                
+
+Instrucciones 
+
+Los siguientes comandos requieren de Android NDK, la versión 20.La carpeta
+debe estar en la direccion /opt/ del computador. 
+
+El celular con Android debe estar conectado por medio de cable USB al computador
+y el modo desarrollador tiene que ser activado.En algunos celulares la activación de este
+modo se realiza al tocar la sección Build number varias veces. 
+
+Para verificar que el celular está conectado y con el modo de desarrollador se puede utilizar el 
+comando: 
+
+$ adb devices 
+
+En el caso de que en el archivo contenedor se encuentren libs y obj quiere decir que el programa está listo
+para ser ejecutado y se debe omitir el paso 1.  
+
+Producto Punto (dotproduct)
+
+1- Ejecutar en la carpeta /dotproduct/:
+
+    $ /opt/android-ndk-r20/ndk-build
+
+2- Entrar en el archivo jni y ejecutar:
+
+    $ adb push ../libs/armeabi-v7a/dot /data/local/tmp
+
+3- Ejecutar el código 
+
+    $ adb shell /data/local/tmp/dot
+
+
+
+Cálculo de Euler (euler)
+
+1- Ejecutar en la carpeta /euler/:
+
+    $ /opt/android-ndk-r20/ndk-build
+
+2- Entrar en el archivo jni y ejecutar:
+
+    $ adb push ../libs/armeabi-v7a/euler /data/local/tmp
+
+3- Ejecutar el código 
+
+    $ adb shell /data/local/tmp/euler
+
+Función Saxpy
+
+1- Ejecutar en la carpeta /SAXPY/:
+
+    $ /opt/android-ndk-r20/ndk-build
+
+2- Entrar en el archivo jni y ejecutar:
+
+    $ adb push ../libs/armeabi-v7a/saxpy /data/local/tmp
+
+3- Ejecutar el código 
+
+    $ adb shell /data/local/tmp/saxpy
+
+Función Saxpy con paralelismo 
+
+1- Ejecutar en la carpeta /SAXPY_par/:
+
+    $ /opt/android-ndk-r20/ndk-build
+
+2- Entrar en el archivo jni y ejecutar:
+
+    $ adb push ../libs/armeabi-v7a/saxpy_par /data/local/tmp
+
+3- Ejecutar el código 
+
+    $ adb shell /data/local/tmp/saxpy_par
+
+
+
+
